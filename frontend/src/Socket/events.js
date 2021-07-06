@@ -35,9 +35,7 @@ export function ExamStart(examID) {
 }
 
 export function TicketOpened(ticketID, title, body, studentID) {
-  socket.emit("ticket-open", ticketID, title, body, studentID, examID, (res) => {
-      console.log(res);
-    });
+  socket.emit("ticket-open", ticketID, title, body, studentID, examID)
   store.dispatch({
     type: ActionType.ADD_TICKET,
     ticket: {
@@ -55,14 +53,13 @@ export function ReplyToTicket(reply, userID, ticketID, userName) {
 }
 
 export function CloseTicket(ticketID, teacherName) {
-  socket.emit("ticket-closed", ticketID, teacherName, userID
-  );
+  socket.emit("ticket-closed", ticketID, teacherName, userID);
   store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
 }
 
 export function events() {
   socket.on("ticket-open-teacher", (ticketID, title, body, studentID) => {
-    console.log(ticketID, title, body, studentID);
+
     store.dispatch({
       type: ActionType.ADD_TICKET,
       ticket: {
@@ -77,12 +74,10 @@ export function events() {
   });
 
   socket.on("ticket-closed-by-teacher", (ticketID, teacherName) => {
-    console.log(ticketID, teacherName);
-    //store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
+    store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
   });
 
   socket.on("ticket-reply", (ticketID, name, reply) => {
-    console.log(ticketID, name, reply);
     store.dispatch({
       type: ActionType.REPLY_TICKET, 
       id: ticketID,

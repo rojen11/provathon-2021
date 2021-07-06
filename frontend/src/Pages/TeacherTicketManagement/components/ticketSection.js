@@ -4,7 +4,7 @@ import { CloseTicket } from "./../../../Socket/events";
 
 export default function TicketSection(props) {
   const { id, name, ticket } = props;
-
+  console.log(ticket)
   return (
     <div className="relative rounded-lg shadow-xl min-h-full p-5 border border-gray-200">
       <section className="mt-4 rounded-lg shadow-xl p-4 border border-gray-200">
