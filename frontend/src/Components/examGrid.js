@@ -9,9 +9,7 @@ export default function ExamGrid({ gridCols, p, click, cards }) {
           key={card.id}
           click={() => click(card.id)}
           title={card.name}
-          examDuration={moment
-            .duration(moment(card.endTime) - moment(card.startTime))
-            .hours()}
+          examDuration={moment.duration(moment(card.endTime).diff(moment(card.startTime))).hours() + " hours"}
           startTime={card.startTime}
           submit={card.submitDuration}
         />

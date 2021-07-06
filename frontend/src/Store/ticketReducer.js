@@ -19,7 +19,6 @@ const ticketReducer = (state = initState, action) => {
   // eslint-disable-next-line default-case
   switch (action.type) {
     case ActionType.ADD_TICKET:
-      console.log(action)
       modifyState.tickets.push(action.ticket);
       modifyState.ticketID++;
       return modifyState;

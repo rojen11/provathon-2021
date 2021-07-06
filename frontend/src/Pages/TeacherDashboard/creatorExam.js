@@ -4,8 +4,12 @@ import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import AxiosFunction from "../../Store/axiosFunction";
 import { useState } from "react";
+import PopUp from "./../../Components/popup";
+import { connect } from 'react-redux';
+import * as ActionType from "../../Store/actionTypes";
 
-export default function CreateExam(props) {
+function CreateExam(props) {
+  const [show, setShow] = useState(false);
   const [exam, setExam] = useState({
     name: "",
     start: "",
@@ -32,7 +36,11 @@ export default function CreateExam(props) {
                 completed
             }
         }
-    }`);
+    }`).then(res => {
+      const data = res.data.data.createExam.exam;
+      props.onAddExam(data)
+      setShow(true);
+    });
   }
   return (
     <Paper elevation={5} className="flex flex-col w-1/2 mt-7 p-5 gap-y-5">
@@ -89,13 +97,24 @@ export default function CreateExam(props) {
         Upload Exam Paper
       </Button>
       <Button
-        onClick={onCreateExam}
+        onClick={() => {
+          onCreateExam();
+        }}
         variant="filled"
         size="large"
         className="p-4 mt-1 w-full text-white bg-green-500"
       >
         Create Exam
       </Button>
+      <PopUp
+        click={() => console.log()}
+        show={show}
+        setShow={setShow}
+        title="Exam Has Been Created"
+        body="This exam has been created and sent out to students in this course. Please be sure to provide support using tickets feautre."
+        buttonName="OKAY"
+        color="green"
+      />
     </Paper>
   );
 }
@@ -113,3 +132,11 @@ function EnterDateTime({ label, change }) {
     />
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddExam: (val) => dispatch({type: ActionType.ADD_EXAM, exam: val})
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CreateExam);
