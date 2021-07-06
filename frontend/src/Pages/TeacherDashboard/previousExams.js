@@ -20,7 +20,7 @@ function PreviousExams(props) {
 
 const mapStateToProps = (state) => {
   return {
-    exams: state.ExamReducer.exams,
+    exams: [...state.ExamReducer.exams],
   };
 };
 

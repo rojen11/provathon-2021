@@ -9,7 +9,7 @@ export default function PopUpV2({
   inputLabel,
 }) {
   return (
-    <div className="bg-white w-96 ring-4 ring-gray-300 rounded-lg shadow-xl filter drop-shadow-xl">
+    <div className="z-10 bg-white w-96 ring-4 ring-gray-300 rounded-lg shadow-xl filter drop-shadow-xl">
       <div className="p-5 pt-2 pb-2 border-b-2 border-black">
         <button
           onClick={click}

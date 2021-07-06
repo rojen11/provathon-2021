@@ -48,8 +48,8 @@ export function TicketOpened(ticketID, title, body, studentID) {
   });
 }
 
-export function ReplyToTicket(reply, userID, ticketID, userName) {
-  socket.emit("ticket-reply", reply, userID, ticketID, userName)
+export function ReplyToTicket(reply, userID, ticketID, userName, isTeacher) {
+  socket.emit("ticket-reply", reply, userID, ticketID, userName, isTeacher)
 }
 
 export function CloseTicket(ticketID, teacherName) {

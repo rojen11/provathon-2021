@@ -153,10 +153,12 @@ io.on("connection", (socket) => {
         })
 
         //ticket reply ko lagi
-        socket.on("ticket-reply", (ticketId, ticketNewTitle, ticketIdNewBody, student) => {
+        socket.on("ticket-reply", (reply, userID, ticketID, userName, isTeacher) => {
           //TODO: update the ticket query
           console.log("Ticket about to be replied!!!!");
-          
+          //if teacher send to students lobby
+          //if student send to teacher lobby
+          //know who is sending the message
         })
 
 
