@@ -14,7 +14,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile-backend
-    command: gunicorn -b :80 backend.wsgi
+    command: ["bash", "-c", "python manage.py migrate && gunicorn -b :80 --workers=3 --worker-class=gevent backend.wsgi"]
     env_file:
       - docker/.env
     depends_on:
