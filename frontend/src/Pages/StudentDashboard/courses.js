@@ -14,6 +14,11 @@ function Courses(props) {
             examSet {
               id
             }
+            primaryTeacher{
+              id
+              firstName
+              lastName
+            }
         }
     }`).then((res) => {
       const data = res.data.data.course;
@@ -31,13 +36,14 @@ function Courses(props) {
           }}
           name={course.name}
           exams={course.examSet.length}
+          teacherName={course.primaryTeacher.firstName + " " + course.primaryTeacher.lastName}
         />
       ))}
     </div>
   );
 }
 
-function CourseCard({ name, click, exams }) {
+function CourseCard({ name, click, exams, teacherName }) {
   return (
     <Paper
       onClick={click}
@@ -45,7 +51,7 @@ function CourseCard({ name, click, exams }) {
       className="cursor-pointer w-72 h-52 relative"
     >
       <div className="text-4xl p-5 pb-0">{name}</div>
-      <div className="p-5 pt-2 text-gray-500 text-xl">Teacher: Name Name</div>
+      <div className="p-5 pt-2 text-gray-500 text-xl">Teacher: {teacherName}</div>
       <div className="absolute bottom-0 bg-green-500 w-full h-12 grid place-items-center">
         <div className="text-white text-center text-xl">
           Total Exams: {exams}
@@ -57,7 +63,7 @@ function CourseCard({ name, click, exams }) {
 
 const mapStateToProps = (state) => {
   return {
-    courses: state.CourseReducer.courses,
+    courses: [...state.CourseReducer.courses],
   };
 };
 

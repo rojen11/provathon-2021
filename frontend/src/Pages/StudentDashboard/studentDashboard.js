@@ -30,7 +30,7 @@ function StudentDashboard(props) {
     <div className="">
       <Title topProps={props} joinState={[join, setJoin]} />
       <AnimatePresence>
-        <motion.div className="absolute top-1/4 left-1/2 transform -translate-x-1/2">
+        <motion.div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 z-10">
           {join && <JoinCourse joinState={[join, setJoin]} />}
         </motion.div>
       </AnimatePresence>

@@ -7,7 +7,6 @@ import { getTicketByID } from "./../../helperFunctions";
 
 function TeacherTicketManagement(props) {
   const [selected, setSelected] = useState(-1);
-  console.log(props);
   return (
     <div className="flex flex-row gap-4 p-3" style={{ height: "100vh" }}>
       <div className="bg-white h-full shadow-xl min-w-min w-1/4">
@@ -18,6 +17,7 @@ function TeacherTicketManagement(props) {
         <div className="p-4">
           {props.tickets.map((ticket) => (
             <TeacherTicketCard
+              key={ticket.id}
               click={() => setSelected(ticket.id)}
               selected={ticket.id === selected}
               title={ticket.title}
@@ -30,8 +30,7 @@ function TeacherTicketManagement(props) {
         {selected !== -1 && (
           <TicketSection
             id={selected}
-            ticket={getTicketByID(selected)}
-            name={props.firstName + " " + props.secondName}
+            ticket={props.tickets[getTicketByID(selected)]}
           />
         )}
       </div>
@@ -39,11 +38,8 @@ function TeacherTicketManagement(props) {
   );
 }
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     tickets: [...state.TicketReducer.tickets],
-    firstName: state.AuthReducer.firstName,
-    lastName: state.AuthReducer.lastName,
   };
 };
 
