@@ -41,6 +41,8 @@ services:
       context: .
       dockerfile: Dockerfile-socket
     command: yarn start
+    env_file:
+      - docker/.env
     depends_on:
       - db
 
