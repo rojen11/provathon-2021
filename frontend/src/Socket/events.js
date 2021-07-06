@@ -105,6 +105,7 @@ export function sendLog(message) {
     socket.emit("log", {
       userId: store.getState().AuthReducer.userID,
       message: message,
+      examId: examID
     });
   }
 }
