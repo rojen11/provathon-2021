@@ -31,7 +31,7 @@ class CreateCourse(graphene.Mutation):
         if (info.context.user.is_authenticated):
             teacher = info.context.user
 
-            if (not teacher.isTeacher):
+            if (not teacher.is_teacher):
                 raise Exception('Only teachers are allowed to create a course!')
 
 
@@ -67,7 +67,7 @@ class DeleteCourse(graphene.Mutation):
             teacher_id = teacher.id
 
             # check if the user is a teacher
-            if (not teacher.isTeacher):
+            if (not teacher.is_teacher):
                 raise Exception('Only teachers are allowed to delete a course!')
 
             # check if the course belongs to the teacher
@@ -100,7 +100,7 @@ class JoinCourse(graphene.Mutation):
 
         if (user.is_authenticated):
             
-            if (user.isTeacher):
+            if (user.is_teacher):
                 raise Exception('You must be student to join this course!')
 
             course = Course.objects.get(code=code)
@@ -132,7 +132,7 @@ class Query(graphene.ObjectType):
     def resolve_course(self, info):
         user = info.context.user
         if (user.is_authenticated):
-            if (user.isTeacher):
+            if (user.is_teacher):
                 return Course.objects.filter(primary_teacher = info.context.user)
             else:
                 return Course.objects.filter(courseuser__user=user)
@@ -145,7 +145,7 @@ class Query(graphene.ObjectType):
 
         if (user.is_authenticated):
             course = Course.objects.get(id=course_id)
-            return User.objects.filter(courseuser__course=course, isTeacher=False).only('id','first_name','last_name','email')
+            return User.objects.filter(courseuser__course=course, is_teacher=False).only('id','first_name','last_name','email')
 
         raise Exception("You must be logged in!")
 
