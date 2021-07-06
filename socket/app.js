@@ -74,103 +74,113 @@ function calculateTimeLeft(currentDate, endTime_) {
 
 
 io.on("connection", (socket) => {
-    let examID;
     let userID;
+
 
     console.log("Socket Connected");
     //calculate time left
     socket.on("exam-started", (examId, userId, isTeacher, startDate, endDate) => {
         userID = userId;
-        examID = examId;
-        
+
         if (isTeacher) {
             socket.join(`teachers-${examId}`)
-            console.log("teacher has joined the room")
+            // console.log("teacher has joined the room")
         } else {
             socket.join(`${userId}`)
-            console.log(`${userId} has joined the class`)
+            // console.log(`${userId} has joined the class`)
         }
         console.log("EXAM HAS STARTED")
-        // pool.query('SELECT start_time, end_time, id FROM exams_exam WHERE id=$1;', [examId], (err, rows, fields) => {
-        //     console.log(rows.length)
+    
+        startTime = startDate;
+        endTime = endDate;
+        let currentDate = finalCurrentDate.getDateTime();
+        schdule.scheduleJob("exam", '*/1 * * * * *', () => {
+        currentDate = finalCurrentDate.getDateTime();
+        // console.log(calculateTimeLeft(currentDate, endTime));
+        })
+            // pool.query('SELECT start_time, end_time, id FROM exams_exam WHERE id=$1;', [examId], (err, rows, fields) => {
+            //     console.log(rows.length)
 
-        //     if (rows.rows.length === 1) {
-        //         const row0 = rows.rows[0]
-        //         startTime = row0.start_time;
-        //         endTime = row0.end_time;
-        //         let currentDate = finalCurrentDate.getDateTime();
-        //         schdule.scheduleJob("exam", '*/1 * * * * *', () => {
-        //             // console.log("I ran.....")
-        //             currentDate = finalCurrentDate.getDateTime();
-        //             console.log(`Current Date: ${currentDate}`);
-        //             console.log(calculateTimeLeft(currentDate, endTime));
-        //         })
-        //     }
+            //     if (rows.rows.length === 1) {
+            //         const row0 = rows.rows[0]
+            //         startTime = row0.start_time;
+            //         endTime = row0.end_time;
+            //         let currentDate = finalCurrentDate.getDateTime();
+            //         schdule.scheduleJob("exam", '*/1 * * * * *', () => {
+            //             // console.log("I ran.....")
+            //             currentDate = finalCurrentDate.getDateTime();
+            //             console.log(`Current Date: ${currentDate}`);
+            //             console.log(calculateTimeLeft(currentDate, endTime));
+            //         })
+            //     }
+            // })
+
+
+        })
+
+
+        socket.on("ticket-open", (ticket_id, title, body, student_name, examId) => {
+            console.log("TICKET OPENED!!!")
+            socket.to(`teachers-${examId}`).emit('ticket-open-teacher', ticket_id, title, body, student_name);
+            console.log("after ticket sent to teacher")
+            // pool.query(studentId, [student_name, examID], function (err, rows, fields) {
+            //     if (rows.rows.length === 1) {
+            //         if (title != null && body != null) {
+            //             pool.query('INSERT INTO exams_tickets (title, description, exam_id, student_id, resolved, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7);'
+            //                 , [title, body, examID, student, false, finalCurrentDate.dateTimeinDBFormat(), finalCurrentDate.dateTimeinDBFormat()], (err, res) => {
+            //                     if (err) {
+            //                         // socket.emit("ticket-open-unsuccesfull");
+            //                         console.log(title)
+            //                         console.log(body)
+            //                         callback({ success: false })
+            //                         throw (err)
+            //                     }
+            //                     else {
+            //                         // socket.emit("ticket-open-succesfull");
+            //                         callback({ success: true })
+            //                     }
+            //                 })
+            //         }
+            //         else {
+            //             //bhaena bhane => student chaina bhane, title body empty, exam start bhako chaina bhane, timeleft chaina bhane
+            //             // socket.emit("ticket-open-unsuccesfull");
+            //             callback({ success: false })
+            //         }
+            //     }
+            // });
+        })
+
+        //ticket reply ko lagi
+        // socket.on("ticket-reply", (ticketId, ticketNewTitle, ticketIdNewBody, student, callback) => {
+        //   //TODO: update the ticket query
+        //   // if (ticket is on and ticket is not resolved and ticket in database) {
+        //   //   ticket modifiable; 
+        //   // } else {
+        //   //   not modifiable;
+        //   // }
         // })
-    })
 
 
-    socket.on("ticket-open", (ticket_id, title, body, student_name) => {
-        console.log("TICKET OPENED!!!")
-        socket.to(`teachers-${examID}`).emit('ticket-open-teacher', ticket_id, title, body, student_name);
-        // pool.query(studentId, [student_name, examID], function (err, rows, fields) {
-        //     if (rows.rows.length === 1) {
-        //         if (title != null && body != null) {
-        //             pool.query('INSERT INTO exams_tickets (title, description, exam_id, student_id, resolved, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7);'
-        //                 , [title, body, examID, student, false, finalCurrentDate.dateTimeinDBFormat(), finalCurrentDate.dateTimeinDBFormat()], (err, res) => {
-        //                     if (err) {
-        //                         // socket.emit("ticket-open-unsuccesfull");
-        //                         console.log(title)
-        //                         console.log(body)
-        //                         callback({ success: false })
-        //                         throw (err)
-        //                     }
-        //                     else {
-        //                         // socket.emit("ticket-open-succesfull");
-        //                         callback({ success: true })
-        //                     }
-        //                 })
-        //         }
-        //         else {
-        //             //bhaena bhane => student chaina bhane, title body empty, exam start bhako chaina bhane, timeleft chaina bhane
-        //             // socket.emit("ticket-open-unsuccesfull");
-        //             callback({ success: false })
-        //         }
-        //     }
-        // });
-    })
-
-    //ticket reply ko lagi
-    // socket.on("ticket-reply", (ticketId, ticketNewTitle, ticketIdNewBody, student, callback) => {
-    //   //TODO: update the ticket query
-    //   // if (ticket is on and ticket is not resolved and ticket in database) {
-    //   //   ticket modifiable; 
-    //   // } else {
-    //   //   not modifiable;
-    //   // }
-    // })
-
-
-    //ticket close
-    socket.on("ticket-closed", (ticketId, teacher_name) => {
-        console.log("Ticket about to be closed!!!!")
-        socket.to(`${userId}`).emit("ticket-closed-by-teacher", ticketId, teacher_name);
-        //TODO: close the ticket query
-        // pool.query('SELECT exams_tickets.id, users_user.is_teacher from exams_tickets LEFT JOIN exams_exam ON (exams_exam.id = exams_tickets.exam_id) LEFT JOIN courses_course ON (courses_course.id = exams_exam.course_id) LEFT JOIN users_user ON (users_user.id = courses_course.primary_teacher_id) WHERE exams_tickets.id=$1 and exams_exam.id = $2 and courses_course.primary_teacher_id = $3;'
-        //     , [7, 3, 4], (err, res) => {
-        //         console.log(res);
-        //         if (res.row.length === 1) {
-        //             //ticket can be closed by teacher
-        //             callback({ success: true })
-        //         }
-        //         else {
-        //             //ticket cannot be closed cause error bhayo  
-        //             callback({ success: false })
-        //             throw (err)
-        //         }
-        //     })
+        //ticket close
+        socket.on("ticket-closed", (ticketId, teacher_name) => {
+            console.log("Ticket about to be closed!!!!")
+            socket.to(`${userId}`).emit("ticket-closed-by-teacher", ticketId, teacher_name);
+            //TODO: close the ticket query
+            // pool.query('SELECT exams_tickets.id, users_user.is_teacher from exams_tickets LEFT JOIN exams_exam ON (exams_exam.id = exams_tickets.exam_id) LEFT JOIN courses_course ON (courses_course.id = exams_exam.course_id) LEFT JOIN users_user ON (users_user.id = courses_course.primary_teacher_id) WHERE exams_tickets.id=$1 and exams_exam.id = $2 and courses_course.primary_teacher_id = $3;'
+            //     , [7, 3, 4], (err, res) => {
+            //         console.log(res);
+            //         if (res.row.length === 1) {
+            //             //ticket can be closed by teacher
+            //             callback({ success: true })
+            //         }
+            //         else {
+            //             //ticket cannot be closed cause error bhayo  
+            //             callback({ success: false })
+            //             throw (err)
+            //         }
+            //     })
+        });
     });
-});
 
 
 
