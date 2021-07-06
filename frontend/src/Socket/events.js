@@ -91,7 +91,7 @@ export function events() {
 export function sendLog(message) {
   if (socket != null) {
     socket.emit("log", {
-      userId: store.getState().AuthReducer.userID,
+      userId: userID,
       message: message,
       examId: examID
     });
