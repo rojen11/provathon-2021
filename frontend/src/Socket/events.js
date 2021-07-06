@@ -15,12 +15,22 @@ export function ConnectSocket(id) {
   events();
 }
 
+function getExamByID(id){
+  for(var i = 0; i<store.getState().ExamReducer.exams.length; i++){
+    if(store.getState().ExamReducer.exams[i].id === id){
+      return store.getState().ExamReducer.exams[i];
+    }
+  }
+}
+
 export function ExamStart(examID) {
   socket.emit(
     "exam-started",
     examID,
     store.getState().AuthReducer.userID,
-    store.getState().AuthReducer.isTeacher
+    store.getState().AuthReducer.isTeacher,
+    getExamByID(examID).startTime,
+    getExamByID(examID).endTime,
   );
 }
 
