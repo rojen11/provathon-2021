@@ -198,7 +198,7 @@ GRAPHQL_AUTH = {
         'email': 'String',
         'password1': 'String',
         'password2': 'String',
-        'isTeacher': 'Boolean'
+        'is_teacher': 'Boolean'
     },
     "USER_NODE_EXCLUDE_FIELDS": ['password']
 }
