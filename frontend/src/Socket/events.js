@@ -57,7 +57,7 @@ export function CloseTicket(ticketID, teacherName) {
 }
 
 export function events() {
-  socket.on("ticket-open-teacher", (ticketID, title, body, studentID, examID) => {
+  socket.on("ticket-open-teacher", (ticketID, title, body, studentID) => {
     console.log(ticketID, title, body, studentID);
     store.dispatch({
       type: ActionType.ADD_TICKET, ticket: {
@@ -71,7 +71,7 @@ export function events() {
     })
   });
 
-  socket.on("ticket-closed-by-teacher", (ticketID, teacherName, examID) => {
+  socket.on("ticket-closed-by-teacher", (ticketID, teacherName) => {
     console.log(ticketID, teacherName);
     //store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
   });
