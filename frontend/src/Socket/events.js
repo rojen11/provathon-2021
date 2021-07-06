@@ -35,12 +35,10 @@ export function ExamStart(examID) {
 }
 
 export function TicketOpened(ticketID, title, body, studentID) {
-  socket.emit("ticket-open", ticketID, title, body, studentID, (res) => {
-    console.log(res);
-  });
-  store.dispatch({
-    type: ActionType.ADD_TICKET, ticket: {
-      id: ticketID,
+  socket.emit("ticket-open", ticketID, title, body, studentID, examID, (res) => {
+      console.log(res);
+    });
+    store.dispatch({type: ActionType.ADD_TICKET, ticket: { id: ticketID,
       title: title,
       body: body,
       closed: false,
@@ -54,12 +52,12 @@ export function ReplyToTicket(reply, studentID, ticketID) {
 }
 
 export function CloseTicket(ticketID, teacherName) {
-  socket.emit("ticket-closed", ticketID, teacherName);
-  //store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
+  socket.emit("ticket-closed", ticketID, teacherName, examID);
+  store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
 }
 
 export function events() {
-  socket.on("ticket-open-teacher", (ticketID, title, body, studentID) => {
+  socket.on("ticket-open-teacher", (ticketID, title, body, studentID, examID) => {
     console.log(ticketID, title, body, studentID);
     store.dispatch({
       type: ActionType.ADD_TICKET, ticket: {
@@ -73,7 +71,7 @@ export function events() {
     })
   });
 
-  socket.on("ticket-closed-by-teacher", (ticketID, teacherName) => {
+  socket.on("ticket-closed-by-teacher", (ticketID, teacherName, examID) => {
     console.log(ticketID, teacherName);
     //store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
   });

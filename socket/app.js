@@ -81,13 +81,13 @@ io.on("connection", (socket) => {
     //calculate time left
     socket.on("exam-started", (examId, userId, isTeacher, startDate, endDate) => {
         userID = userId;
-
+        console.log(isTeacher)
         if (isTeacher) {
             socket.join(`teachers-${examId}`)
-            // console.log("teacher has joined the room")
+            console.log("teacher has joined the room")
         } else {
             socket.join(`${userId}`)
-            // console.log(`${userId} has joined the class`)
+            console.log(`${userId} has joined the class`)
         }
         console.log("EXAM HAS STARTED")
     
@@ -122,7 +122,9 @@ io.on("connection", (socket) => {
         socket.on("ticket-open", (ticket_id, title, body, student_name, examId) => {
             console.log("TICKET OPENED!!!")
             socket.to(`teachers-${examId}`).emit('ticket-open-teacher', ticket_id, title, body, student_name);
-            console.log("after ticket sent to teacher")
+            console.log(`${student_name} sent the ticket to teacher`)
+            console.log(examId)
+            console.log(io.sockets.adapter.rooms)
             // pool.query(studentId, [student_name, examID], function (err, rows, fields) {
             //     if (rows.rows.length === 1) {
             //         if (title != null && body != null) {
