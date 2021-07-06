@@ -18,7 +18,7 @@ function TeacherTicketManagement(props) {
         <div className="p-4">
           {props.tickets.map((ticket) => (
             <TeacherTicketCard
-              onClick={() => setSelected(ticket.id)}
+              click={() => setSelected(ticket.id)}
               selected={ticket.id === selected}
               title={ticket.title}
               body={ticket.body}
