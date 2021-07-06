@@ -1,7 +1,7 @@
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 
-from exams.models import Exam
+from exams.models import Exam, StudentLog
 from users.models import User
 from courses.models import CourseUser, Course
 
@@ -11,6 +11,10 @@ import graphene
 class ExamType(DjangoObjectType):
     class Meta:
         model = Exam
+
+class StudentLogType(DjangoObjectType):
+    class Meta:
+        model = StudentLog
         
 
 class CreateExam(graphene.Mutation):
@@ -55,6 +59,8 @@ class Query(graphene.ObjectType):
 
     exams_by_course = graphene.List(ExamType, id=graphene.ID())
 
+    logs_by_exam = graphene.List(StudentLogType, exam_id=graphene.ID())
+
 
 
     def resolve_exams_by_course(self, info, id):
@@ -69,6 +75,15 @@ class Query(graphene.ObjectType):
 
         else:
             raise Exception("You must be logged in!")
+
+
+    def resolve_logs_by_exam(self, info, id):
+        user = info.content.user
+
+        if (user.is_authenticated):
+            return StudentLog.objects.filter(exam__id=id, course__primary_teacher = user)
+        
+        raise Exception('You must be logged in!')
 
 
 class Mutation(graphene.ObjectType):
