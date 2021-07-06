@@ -3,6 +3,8 @@ import PageSetup from "./PageSetup";
 import { connect } from "react-redux";
 import { useEffect } from "react";
 
+import * as ActionType from './Store/actionTypes';
+
 // Log system
 
 let ipcRenderer = null;
@@ -19,10 +21,10 @@ try {
 
 function App({ dispatch }) {
   useEffect(() => {
-    console.log(window.desktop)
+    console.log(window.desktop);
     if (window.desktop) {
       ipcRenderer.on("asynchronous-message", function (evt, message) {
-        // dispatch({type: })
+        dispatch({type: ActionType.SEND_LOG, message:message })
       });
     }
   }, []);

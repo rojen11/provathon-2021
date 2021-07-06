@@ -48,7 +48,13 @@ class Tickets(models.Model):
 # testing code by Sid to upload pdf 
 # student, examId, answerPDF
 class StudentUpload(models.Model): 
-    student = models.ForeignKey(User, on_delete=models.CASCADE);
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     answerPDF = models.FileField() #for file input 
      
+
+class StudentLog(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
