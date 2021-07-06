@@ -180,6 +180,10 @@ io.on("connection", (socket) => {
             //         }
             //     })
         });
+
+        socket.on("log", (logger) => {
+            console.log(logger)
+        } )
     });
 
 
