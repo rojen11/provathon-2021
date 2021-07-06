@@ -7,6 +7,7 @@ import { getTicketByID } from "./../../helperFunctions";
 
 function TeacherTicketManagement(props) {
   const [selected, setSelected] = useState(-1);
+  console.log(props);
   return (
     <div className="flex flex-row gap-4 p-3" style={{ height: "100vh" }}>
       <div className="bg-white h-full shadow-xl min-w-min w-1/4">
@@ -37,10 +38,10 @@ function TeacherTicketManagement(props) {
     </div>
   );
 }
-
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
-    tickets: state.TicketReducer.tickets,
+    tickets: [...state.TicketReducer.tickets],
     firstName: state.AuthReducer.firstName,
     lastName: state.AuthReducer.lastName,
   };
