@@ -75,32 +75,38 @@ function calculateTimeLeft(currentDate, endTime_) {
 
 io.on("connection", (socket) => {
     let examID;
+    let userID;
+
     console.log("Socket Connected");
     //calculate time left
-    socket.on("exam-started", (examId, userId, isTeacher) => {
+    socket.on("exam-started", (examId, userId, isTeacher, startDate, endDate) => {
+        userID = userId;
+        examID = examId;
+        
         if (isTeacher) {
             socket.join(`teachers-${examId}`)
+            console.log("teacher has joined the room")
         } else {
             socket.join(`${userId}`)
+            console.log(`${userId} has joined the class`)
         }
         console.log("EXAM HAS STARTED")
-        pool.query('SELECT start_time, end_time, id FROM exams_exam WHERE id=$1;', [examId], (err, rows, fields) => {
-            console.log(rows.length)
-            examID = examId;
+        // pool.query('SELECT start_time, end_time, id FROM exams_exam WHERE id=$1;', [examId], (err, rows, fields) => {
+        //     console.log(rows.length)
 
-            if (rows.rows.length === 1) {
-                const row0 = rows.rows[0]
-                startTime = row0.start_time;
-                endTime = row0.end_time;
-                let currentDate = finalCurrentDate.getDateTime();
-                schdule.scheduleJob("exam", '*/1 * * * * *', () => {
-                    // console.log("I ran.....")
-                    currentDate = finalCurrentDate.getDateTime();
-                    console.log(`Current Date: ${currentDate}`);
-                    console.log(calculateTimeLeft(currentDate, endTime));
-                })
-            }
-        })
+        //     if (rows.rows.length === 1) {
+        //         const row0 = rows.rows[0]
+        //         startTime = row0.start_time;
+        //         endTime = row0.end_time;
+        //         let currentDate = finalCurrentDate.getDateTime();
+        //         schdule.scheduleJob("exam", '*/1 * * * * *', () => {
+        //             // console.log("I ran.....")
+        //             currentDate = finalCurrentDate.getDateTime();
+        //             console.log(`Current Date: ${currentDate}`);
+        //             console.log(calculateTimeLeft(currentDate, endTime));
+        //         })
+        //     }
+        // })
     })
 
 
