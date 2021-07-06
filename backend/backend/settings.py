@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -175,6 +176,7 @@ GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
     # optional
     "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=5),
     "JWT_ALLOW_ANY_CLASSES": [
         "graphql_auth.mutations.Register",
         "graphql_auth.mutations.ResendActivationEmail",

@@ -182,7 +182,13 @@ io.on("connection", (socket) => {
         });
 
         socket.on("log", (logger) => {
-            console.log(logger)
+            const {userId, message, examId} = logger;
+
+            if (userId !== null && message.event !== null && examId !== null) {
+                pool.query('INSERT into exams_studentlog (student_id, exam_id, message, created_at) VALUES ($1, $2, $3, $4);', [userId, examId, message.event, finalCurrentDate.dateTimeinDBFormat() ], (err, row) => {
+                    console.log({err, row});
+                })
+            }
         } )
     });
 
