@@ -24,7 +24,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "cross-env REACT_APP_PRODUCTION_BACKEND=true craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
@@ -52,5 +52,7 @@
     "cross-env": "^7.0.3",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
-  }
+  },
+  "proxy": "http://localhost/"
+
 }
