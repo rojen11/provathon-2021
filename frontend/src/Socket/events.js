@@ -79,7 +79,7 @@ export function events() {
   socket.on("ticket-reply", (ticketID, name, reply) => {
     console.log(ticketID, name, reply);
     store.dispatch({
-      type: ActionType.REPLY_TICKET,
+      type: ActionType.REPLY_TICKET, 
       id: ticketID,
       userName: name,
       comment: reply,

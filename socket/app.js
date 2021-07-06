@@ -164,7 +164,7 @@ io.on("connection", (socket) => {
 
 
         //ticket close
-        socket.on("ticket-closed", (ticketId, teacher_name) => {
+        socket.on("ticket-closed", (ticketId, teacher_name, userId) => {
             console.log("Ticket about to be closed!!!!")
             socket.to(`${userId}`).emit("ticket-closed-by-teacher", ticketId, teacher_name);
             //TODO: close the ticket query
