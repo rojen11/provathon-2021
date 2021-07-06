@@ -5,23 +5,19 @@ import { CloseTicket } from "./../../../Socket/events";
 export default function TicketSection(props) {
   const { id, name, ticket } = props;
 
-  const title = "What is Q4 man?";
-  const body =
-    "Question 4 is wrong man and you give it to us, what are you doing.";
-  const by = "NOt me";
-  const teacher = "DL";
-
   return (
     <div className="relative rounded-lg shadow-xl min-h-full p-5 border border-gray-200">
       <section className="mt-4 rounded-lg shadow-xl p-4 border border-gray-200">
-        <span className="font-bold">{by}</span>
+        <span className="font-bold">{name}</span>
         <div className="p-3">
           <div className="text-xl p-2">{ticket.title}</div>
           <hr></hr>
           <p className="p-2">{ticket.body}</p>
         </div>
       </section>
-      <Comment name={name} body={body} />
+      {ticket.comments.map((comment) => (
+        <Comment name={comment.name} body={comment.body} />
+      ))}
       <section className="mt-4 rounded-lg shadow-xl p-4 border border-gray-200">
         <span className="font-bold">{name}</span>
         <div className="p-3">
