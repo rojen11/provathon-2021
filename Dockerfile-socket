@@ -1,0 +1,11 @@
+FROM node:lts-alpine
+
+WORKDIR /app/
+
+COPY socket/package*.json socket/yarn.lock /app/
+
+RUN yarn
+
+COPY socket/ /app/
+
+

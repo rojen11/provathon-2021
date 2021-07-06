@@ -1,0 +1,22 @@
+# Frontend build
+FROM node:lts-alpine AS builder
+
+WORKDIR /app/
+
+COPY ./frontend/package*.json ./frontend/yarn.lock /app/
+
+RUN yarn
+
+COPY ./frontend /app/
+
+RUN yarn build
+
+
+
+# web server
+FROM nginx:stable
+
+WORKDIR /app/
+
+COPY --from=builder /app/build /app/
+

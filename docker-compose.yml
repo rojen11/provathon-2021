@@ -1,0 +1,50 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    env_file:
+      - docker/.env
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile-backend
+    command: gunicorn -b :80 backend.wsgi
+    env_file:
+      - docker/.env
+    depends_on:
+      - db
+    volumes: 
+      - ./backend/static/:/app/static
+
+
+  nginx:
+    build: 
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./backend/static/:/static/
+    depends_on: 
+      - backend
+      - socket
+
+  socket:
+    build: 
+      context: .
+      dockerfile: Dockerfile-socket
+    command: yarn start
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+
+
