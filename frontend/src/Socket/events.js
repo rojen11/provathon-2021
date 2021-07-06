@@ -15,19 +15,27 @@ export function ConnectSocket(id) {
   events();
 }
 
+function getExamByID(id){
+  for(var i = 0; i<store.getState().ExamReducer.exams.length; i++){
+    if(store.getState().ExamReducer.exams[i].id === id){
+      return store.getState().ExamReducer.exams[i];
+    }
+  }
+}
+
 export function ExamStart(examID) {
   socket.emit(
     "exam-started",
     examID,
     store.getState().AuthReducer.userID,
-    store.getState().AuthReducer.isTeacher
+    store.getState().AuthReducer.isTeacher,
+    getExamByID(examID).startTime,
+    getExamByID(examID).endTime,
   );
 }
 
 export function TicketOpened(ticketID, title, body, studentID) {
-  socket
-    .to(`teachers-${examID}`)
-    .emit("ticket-open", ticketID, title, body, studentID, (res) => {
+  socket.emit("ticket-open", ticketID, title, body, studentID, examID, (res) => {
       console.log(res);
     });
   store.dispatch({
@@ -47,8 +55,8 @@ export function ReplyToTicket(reply, studentID, ticketID) {
 }
 
 export function CloseTicket(ticketID, teacherName) {
-  socket.to(`${userID}`).emit("ticket-closed", ticketID, teacherName);
-  //store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
+  socket.emit("ticket-closed", ticketID, teacherName, userID);
+  store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
 }
 
 export function events() {
