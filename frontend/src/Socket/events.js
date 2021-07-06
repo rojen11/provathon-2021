@@ -52,7 +52,7 @@ export function ReplyToTicket(reply, studentID, ticketID) {
 }
 
 export function CloseTicket(ticketID, teacherName) {
-  socket.emit("ticket-closed", ticketID, teacherName, examID);
+  socket.emit("ticket-closed", ticketID, teacherName, userID);
   store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
 }
 
