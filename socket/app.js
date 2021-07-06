@@ -153,20 +153,18 @@ io.on("connection", (socket) => {
         })
 
         //ticket reply ko lagi
-        // socket.on("ticket-reply", (ticketId, ticketNewTitle, ticketIdNewBody, student, callback) => {
-        //   //TODO: update the ticket query
-        //   // if (ticket is on and ticket is not resolved and ticket in database) {
-        //   //   ticket modifiable; 
-        //   // } else {
-        //   //   not modifiable;
-        //   // }
-        // })
+        socket.on("ticket-reply", (ticketId, ticketNewTitle, ticketIdNewBody, student) => {
+          //TODO: update the ticket query
+          console.log("Ticket about to be replied!!!!");
+          
+        })
 
 
         //ticket close
         socket.on("ticket-closed", (ticketId, teacher_name, userId) => {
             console.log("Ticket about to be closed!!!!")
             socket.to(`${userId}`).emit("ticket-closed-by-teacher", ticketId, teacher_name);
+            console.log("CLOSEDDDD YOO!!!")
             //TODO: close the ticket query
             // pool.query('SELECT exams_tickets.id, users_user.is_teacher from exams_tickets LEFT JOIN exams_exam ON (exams_exam.id = exams_tickets.exam_id) LEFT JOIN courses_course ON (courses_course.id = exams_exam.course_id) LEFT JOIN users_user ON (users_user.id = courses_course.primary_teacher_id) WHERE exams_tickets.id=$1 and exams_exam.id = $2 and courses_course.primary_teacher_id = $3;'
             //     , [7, 3, 4], (err, res) => {
