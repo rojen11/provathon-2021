@@ -10,8 +10,9 @@ const { BigIntStats } = require('fs');
 // Load database info to connect
 const pgUser = process.env.POSTGRES_USER;
 const pgPass = process.env.POSTGRES_PASSWORD;
-const serverLoc = process.env.POSTGRES_HOST;
 const dbName = process.env.POSTGRES_DB;
+const development = process.env.NODE_ENV == 'development'
+const serverLoc = development ? 'localhost' : process.env.POSTGRES_HOST;
 
 const connString = 'tcp://' + pgUser + ':' + pgPass + '@' + serverLoc + ':5432/' + dbName; //username:password@location:port/dbname
 
@@ -33,10 +34,11 @@ pool.connect(err => {
 })
 
 //Postgres setup done
-const io = require("socket.io")(process.env.NODE_PORT, {
+const io = require("socket.io")(development ? process.env.NODE_DEV_PORT : process.env.NODE_PORT, {
     cors: {
         origin: "*",
-    }
+    },
+    path: '/socket'
 });
 
 // at a particular date and time
@@ -70,12 +72,17 @@ function calculateTimeLeft(currentDate, endTime_) {
     return `${remaininghours < 10 ? '0' : ''}${remaininghours}: ${remainingminutes < 10 ? '0' : ''}${remainingminutes}: ${remainingseconds < 10 ? '0' : ''}${remainingseconds} remaining`;
 }
 
-let examID;
 
 io.on("connection", (socket) => {
+    let examID;
     console.log("Socket Connected");
     //calculate time left
-    socket.on("exam-started", (examId) => {
+    socket.on("exam-started", (examId, userId, isTeacher) => {
+        if (isTeacher) {
+            socket.join(`teachers-${examId}`)
+        } else {
+            socket.join(`${userId}`)
+        }
         console.log("EXAM HAS STARTED")
         pool.query('SELECT start_time, end_time, id FROM exams_exam WHERE id=$1;', [examId], (err, rows, fields) => {
             console.log(rows.length)
@@ -97,35 +104,34 @@ io.on("connection", (socket) => {
     })
 
 
-    socket.on("ticket-open", (title, body, student, callback) => {
+    socket.on("ticket-open", (ticket_id, title, body, student_name) => {
         console.log("TICKET OPENED!!!")
-        console.log(student)
-        console.log(examID)
-        pool.query(studentId, [student, examID], function (err, rows, fields) {
-            if (rows.rows.length === 1) {
-                if (title != null && body != null) {
-                    pool.query('INSERT INTO exams_tickets (title, description, exam_id, student_id, resolved, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7);'
-                        , [title, body, examID, student, false, finalCurrentDate.dateTimeinDBFormat(), finalCurrentDate.dateTimeinDBFormat()], (err, res) => {
-                            if (err) {
-                                // socket.emit("ticket-open-unsuccesfull");
-                                console.log(title)
-                                console.log(body)
-                                callback({ success: false })
-                                throw (err)
-                            }
-                            else {
-                                // socket.emit("ticket-open-succesfull");
-                                callback({ success: true })
-                            }
-                        })
-                }
-                else {
-                    //bhaena bhane => student chaina bhane, title body empty, exam start bhako chaina bhane, timeleft chaina bhane
-                    // socket.emit("ticket-open-unsuccesfull");
-                    callback({ success: false })
-                }
-            }
-        });
+        socket.to(`teachers-${examID}`).emit('ticket-open-teacher', ticket_id, title, body, student_name);
+        // pool.query(studentId, [student_name, examID], function (err, rows, fields) {
+        //     if (rows.rows.length === 1) {
+        //         if (title != null && body != null) {
+        //             pool.query('INSERT INTO exams_tickets (title, description, exam_id, student_id, resolved, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7);'
+        //                 , [title, body, examID, student, false, finalCurrentDate.dateTimeinDBFormat(), finalCurrentDate.dateTimeinDBFormat()], (err, res) => {
+        //                     if (err) {
+        //                         // socket.emit("ticket-open-unsuccesfull");
+        //                         console.log(title)
+        //                         console.log(body)
+        //                         callback({ success: false })
+        //                         throw (err)
+        //                     }
+        //                     else {
+        //                         // socket.emit("ticket-open-succesfull");
+        //                         callback({ success: true })
+        //                     }
+        //                 })
+        //         }
+        //         else {
+        //             //bhaena bhane => student chaina bhane, title body empty, exam start bhako chaina bhane, timeleft chaina bhane
+        //             // socket.emit("ticket-open-unsuccesfull");
+        //             callback({ success: false })
+        //         }
+        //     }
+        // });
     })
 
     //ticket reply ko lagi
@@ -140,22 +146,23 @@ io.on("connection", (socket) => {
 
 
     //ticket close
-    socket.on("ticket-closed", (ticketId, callback) => {
+    socket.on("ticket-closed", (ticketId, teacher_name) => {
         console.log("Ticket about to be closed!!!!")
+        socket.to(`${userId}`).emit("ticket-closed-by-teacher", ticketId, teacher_name);
         //TODO: close the ticket query
-        pool.query('SELECT exams_tickets.id, users_user.is_teacher from exams_tickets LEFT JOIN exams_exam ON (exams_exam.id = exams_tickets.exam_id) LEFT JOIN courses_course ON (courses_course.id = exams_exam.course_id) LEFT JOIN users_user ON (users_user.id = courses_course.primary_teacher_id) WHERE exams_tickets.id=$1 and exams_exam.id = $2 and courses_course.primary_teacher_id = $3;'
-            , [7, 3, 4], (err, res) => {
-                console.log(res);
-                if (res.row.length === 1) {
-                    //ticket can be closed by teacher
-                    callback({ success: true })
-                }
-                else {
-                    //ticket cannot be closed cause error bhayo  
-                    callback({ success: false })
-                    throw (err)
-                }
-            })
+        // pool.query('SELECT exams_tickets.id, users_user.is_teacher from exams_tickets LEFT JOIN exams_exam ON (exams_exam.id = exams_tickets.exam_id) LEFT JOIN courses_course ON (courses_course.id = exams_exam.course_id) LEFT JOIN users_user ON (users_user.id = courses_course.primary_teacher_id) WHERE exams_tickets.id=$1 and exams_exam.id = $2 and courses_course.primary_teacher_id = $3;'
+        //     , [7, 3, 4], (err, res) => {
+        //         console.log(res);
+        //         if (res.row.length === 1) {
+        //             //ticket can be closed by teacher
+        //             callback({ success: true })
+        //         }
+        //         else {
+        //             //ticket cannot be closed cause error bhayo  
+        //             callback({ success: false })
+        //             throw (err)
+        //         }
+        //     })
     });
 });
 
