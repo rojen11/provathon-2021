@@ -59,7 +59,7 @@ class Query(graphene.ObjectType):
 
     exams_by_course = graphene.List(ExamType, id=graphene.ID())
 
-    logs_by_exam = graphene.List(StudentLogType, exam_id=graphene.ID())
+    logs_by_exam = graphene.List(StudentLogType, id=graphene.ID())
 
 
 
@@ -78,10 +78,10 @@ class Query(graphene.ObjectType):
 
 
     def resolve_logs_by_exam(self, info, id):
-        user = info.content.user
+        user = info.context.user
 
         if (user.is_authenticated):
-            return StudentLog.objects.filter(exam__id=id, course__primary_teacher = user)
+            return StudentLog.objects.filter(exam__id=id, exam__course__primary_teacher = user)
         
         raise Exception('You must be logged in!')
 
