@@ -148,7 +148,7 @@ io.on("connection", (socket) => {
     //ticket close
     socket.on("ticket-closed", (ticketId, teacher_name) => {
         console.log("Ticket about to be closed!!!!")
-        socket.to(`${userId}`).emit("ticket-closed-by-teacher");
+        socket.to(`${userId}`).emit("ticket-closed-by-teacher", ticketId, teacher_name);
         //TODO: close the ticket query
         // pool.query('SELECT exams_tickets.id, users_user.is_teacher from exams_tickets LEFT JOIN exams_exam ON (exams_exam.id = exams_tickets.exam_id) LEFT JOIN courses_course ON (courses_course.id = exams_exam.course_id) LEFT JOIN users_user ON (users_user.id = courses_course.primary_teacher_id) WHERE exams_tickets.id=$1 and exams_exam.id = $2 and courses_course.primary_teacher_id = $3;'
         //     , [7, 3, 4], (err, res) => {
