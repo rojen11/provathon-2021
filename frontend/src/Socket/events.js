@@ -46,12 +46,13 @@ export function TicketOpened(ticketID, title, body, studentID) {
     })
 }
 
-export function ReplyToTicket(reply, studentID, ticketID) {
-  //
+export function ReplyToTicket(reply, userID, ticketID, userName) {
+  socket.emit("ticket-reply", reply, userID, ticketID, userName)
 }
 
 export function CloseTicket(ticketID, teacherName) {
-  socket.emit("ticket-closed", ticketID, teacherName, userID);
+  socket.emit("ticket-closed", ticketID, teacherName, userID
+  );
   store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
 }
 
