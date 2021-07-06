@@ -9,6 +9,7 @@ import AuthReducer from "./Store/authReducer";
 import CourseReducer from "./Store/courseReducer";
 import ExamReducer from "./Store/examReducer";
 import TicketReducer from "./Store/ticketReducer";
+import LogReducer from './Store/logReducer';
 
 export const store = createStore(
   combineReducers({
@@ -17,6 +18,7 @@ export const store = createStore(
     CourseReducer,
     ExamReducer,
     TicketReducer,
+    LogReducer
   })
 );
 
