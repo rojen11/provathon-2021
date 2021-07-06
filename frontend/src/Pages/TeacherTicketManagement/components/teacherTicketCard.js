@@ -1,6 +1,6 @@
 export default function TeacherTicketCard({ title, body, selected, click }) {
   return (
-    <button
+    <div
       onClick={click}
       className={`${
         selected && "border-2 border-black"
@@ -9,6 +9,6 @@ export default function TeacherTicketCard({ title, body, selected, click }) {
       <div className="text-xl font-semibold">{title}</div>
       <div>{body}</div>
       <div className="text-sm text-right text-gray-400">By Name Name</div>
-    </button>
+    </div>
   );
 }
