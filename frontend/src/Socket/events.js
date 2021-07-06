@@ -25,9 +25,7 @@ export function ExamStart(examID) {
 }
 
 export function TicketOpened(ticketID, title, body, studentID) {
-  socket
-    .to(`teachers-${examID}`)
-    .emit("ticket-open", ticketID, title, body, studentID, (res) => {
+  socket.emit("ticket-open", ticketID, title, body, studentID, (res) => {
       console.log(res);
     });
     store.dispatch({type: ActionType.ADD_TICKET, ticket: { id: ticketID,
@@ -43,7 +41,7 @@ export function ReplyToTicket(reply, studentID, ticketID) {
 }
 
 export function CloseTicket(ticketID, teacherName) {
-  socket.to(`${userID}`).emit("ticket-closed", ticketID, teacherName);
+  socket.emit("ticket-closed", ticketID, teacherName);
     //store.dispatch({ type: ActionType.CLOSE_TICKET, id: ticketID });
 }
 
