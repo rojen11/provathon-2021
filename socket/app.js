@@ -10,8 +10,9 @@ const { BigIntStats } = require('fs');
 // Load database info to connect
 const pgUser = process.env.POSTGRES_USER;
 const pgPass = process.env.POSTGRES_PASSWORD;
-const serverLoc = process.env.POSTGRES_HOST;
 const dbName = process.env.POSTGRES_DB;
+const development = process.env.NODE_ENV == 'development'
+const serverLoc = development ? 'localhost' : process.env.POSTGRES_HOST;
 
 const connString = 'tcp://' + pgUser + ':' + pgPass + '@' + serverLoc + ':5432/' + dbName; //username:password@location:port/dbname
 
@@ -33,10 +34,11 @@ pool.connect(err => {
 })
 
 //Postgres setup done
-const io = require("socket.io")(process.env.NODE_PORT, {
+const io = require("socket.io")(development ? process.env.NODE_DEV_PORT : process.env.NODE_PORT, {
     cors: {
         origin: "*",
-    }
+    },
+    path: '/socket'
 });
 
 // at a particular date and time
