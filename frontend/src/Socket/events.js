@@ -15,9 +15,9 @@ export function ConnectSocket(id) {
   events();
 }
 
-function getExamByID(id){
-  for(var i = 0; i<store.getState().ExamReducer.exams.length; i++){
-    if(store.getState().ExamReducer.exams[i].id === id){
+function getExamByID(id) {
+  for (var i = 0; i < store.getState().ExamReducer.exams.length; i++) {
+    if (store.getState().ExamReducer.exams[i].id === id) {
       return store.getState().ExamReducer.exams[i];
     }
   }
@@ -30,14 +30,22 @@ export function ExamStart(examID) {
     store.getState().AuthReducer.userID,
     store.getState().AuthReducer.isTeacher,
     getExamByID(examID).startTime,
-    getExamByID(examID).endTime,
+    getExamByID(examID).endTime
   );
 }
 
 export function TicketOpened(ticketID, title, body, studentID) {
-  socket.emit("ticket-open", ticketID, title, body, studentID, examID, (res) => {
+  socket.emit(
+    "ticket-open",
+    ticketID,
+    title,
+    body,
+    studentID,
+    examID,
+    (res) => {
       console.log(res);
-    });
+    }
+  );
   store.dispatch({
     type: ActionType.ADD_TICKET,
     ticket: {
@@ -93,11 +101,10 @@ export function events() {
 
 // Logger
 export function sendLog(message) {
-  console.log(message);
   if (socket != null) {
-    socket.emit(
-      "log",
-      message
-    );
+    socket.emit("log", {
+      userId: store.getState().AuthReducer.userID,
+      message: message,
+    });
   }
 }
