@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import PageSetup from "./PageSetup";
 
-function App() {
+import { connect } from "react-redux";
+import { useEffect } from "react";
+
+import * as ActionType from './Store/actionTypes';
+
+// Log system
+
+let ipcRenderer = null;
+
+try {
+  const electron = window.require("electron");
+  const fs = electron.remote.require("fs");
+   ipcRenderer = electron.ipcRenderer;
+
+  window.desktop = true;
+} catch {
+  console.log("browser");
+}
+
+function App({ dispatch }) {
+  useEffect(() => {
+    console.log(window.desktop);
+    if (window.desktop) {
+      ipcRenderer.on("asynchronous-message", function (evt, message) {
+        dispatch({type: ActionType.SEND_LOG, message:message })
+      });
+    }
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PageSetup />
     </div>
   );
 }
 
-export default App;
+export default connect()(App);
