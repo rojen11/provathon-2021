@@ -3,6 +3,8 @@ import Header from "../../Components/header";
 import { useState } from "react";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 import TicketSystem from "./ticketSystem";
+import { Document, Page } from 'react-pdf';
+import * as Test from './test.pdf'
 
 export default function Exam() {
   const [show, setShow] = useState(true);
@@ -23,9 +25,24 @@ export default function Exam() {
 }
 
 function ExamPage(props) {
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+
   return (
     <motion.div className="relative flex-grow" layout>
-      <motion.div layout="position">Exam Page</motion.div>
+      <motion.div layout="position">
+        <Document
+        file={Test}
+        onLoadSuccess={onDocumentLoadSuccess}
+        >
+          <Page pageNumber={pageNumber} />
+        </Document>
+        <p>Page {pageNumber} of {numPages}</p>
+      </motion.div>
       <motion.div className="absolute top-0 right-10 py-5 px-7" layout>
         <SimpleButton
           name="Upload Paper"
