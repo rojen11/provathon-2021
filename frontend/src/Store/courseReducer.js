@@ -10,6 +10,9 @@ const courseReducer = (state = initState, action) => {
   // eslint-disable-next-line default-case
   switch (action.type) {
     case ActionType.LOAD_COURSES:
+      if (action.courses === null){
+        action.courses = []
+      }
       modifyState.courses = [...action.courses];
       return modifyState;
     case ActionType.ADD_COURSE:

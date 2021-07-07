@@ -17,7 +17,8 @@ function TeacherTicketManagement(props) {
         <div className="p-4">
           {props.tickets.map((ticket) => (
             <TeacherTicketCard
-              onClick={() => setSelected(ticket.id)}
+              key={ticket.id}
+              click={() => setSelected(ticket.id)}
               selected={ticket.id === selected}
               title={ticket.title}
               body={ticket.body}
@@ -29,20 +30,16 @@ function TeacherTicketManagement(props) {
         {selected !== -1 && (
           <TicketSection
             id={selected}
-            ticket={getTicketByID(selected)}
-            name={props.firstName + " " + props.secondName}
+            ticket={props.tickets[getTicketByID(selected)]}
           />
         )}
       </div>
     </div>
   );
 }
-
 const mapStateToProps = (state) => {
   return {
-    tickets: state.TicketReducer.tickets,
-    firstName: state.AuthReducer.firstName,
-    lastName: state.AuthReducer.lastName,
+    tickets: [...state.TicketReducer.tickets],
   };
 };
 

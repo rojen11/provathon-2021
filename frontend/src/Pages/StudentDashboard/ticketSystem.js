@@ -61,13 +61,6 @@ function TicketSystem(props) {
                 info.input !== "" &&
                 info.body !== ""
               ) {
-                props.onAddTicket({
-                  id: props.ticketID,
-                  title: info.input,
-                  body: info.textarea,
-                  closed: false,
-                  comments: [],
-                });
                 TicketOpened(
                   props.ticketID,
                   info.input,
@@ -152,8 +145,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoadExams: (val) => dispatch({ type: ActionType.LOAD_EXAMS, exams: val }),
-    onAddTicket: (val) =>
-      dispatch({ type: ActionType.ADD_TICKET, ticket: val }),
   };
 };
 

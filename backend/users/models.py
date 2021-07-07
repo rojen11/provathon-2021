@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, isTeacher, password=None):
+    def create_user(self, email, first_name, last_name, is_teacher, password=None):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -19,7 +19,7 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
-            isTeacher=isTeacher
+            is_teacher=is_teacher
         )
 
         user.set_password(password)
@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-    def create_superuser(self, email, first_name, last_name, isTeacher, password=None):
+    def create_superuser(self, email, first_name, last_name, is_teacher, password=None):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
             password=password,
             first_name=first_name,
             last_name=last_name,
-            isTeacher=isTeacher
+            is_teacher=is_teacher
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -53,14 +53,14 @@ class User(AbstractBaseUser):
     username = models.CharField(blank=True, max_length=254)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    isTeacher = models.BooleanField(default=False, blank=False)
+    is_teacher = models.BooleanField(default=False, blank=False)
     first_name = models.CharField(_('first name'), max_length=150, blank=False)
     last_name = models.CharField(_('last name'), max_length=150, blank=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['isTeacher', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['is_teacher', 'first_name', 'last_name']
     EMAIL_FIELD = 'email'
 
     def __str__(self):

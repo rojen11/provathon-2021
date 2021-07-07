@@ -8,7 +8,7 @@ function getDateTime() {
 
 
 function dateTimeinDBFormat() { 
-    let dateformat = moment();
+    let dateformat = moment().utc(true);
     return dateformat.format()
 }
 

@@ -20,3 +20,7 @@ export const REPLY_TICKET = "REPLY_TICKET";
 
 //Socket Reducer
 export const SOCKET_STORE = "SOCKET_STORE";
+
+
+// Log
+export const SEND_LOG = "SEND_LOG";

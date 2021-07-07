@@ -11,6 +11,7 @@ import AccessDenied from "./Pages/accessDenied";
 import { useEffect } from "react";
 import AxiosFunction from "./Store/axiosFunction";
 import * as ActionType from "./Store/actionTypes";
+import StudentLog from './Pages/StudentLog/index';
 
 function PageSetup(props) {
   useEffect(() => {
@@ -81,6 +82,9 @@ function SecureRoute(props) {
       </Route>
       <Route exact path="/teacher-ticket">
         {props.props.isTeacher ? <TeacherTicketManagement /> : <AccessDenied />}
+      </Route>
+      <Route exact path="/studentlog/:examid">
+        <StudentLog />
       </Route>
       <Route path={["/dashboard", "/"]}>
         {props.props.isTeacher ? <TeacherDashboard /> : <StudentDashboard />}
