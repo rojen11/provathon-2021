@@ -15,11 +15,11 @@ function createMainWindow() {
     fullscreen: true,
   });
 
-  if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
+  // if (isDevelopment) {
+  //   window.webContents.openDevTools();
+  // }
 
-  window.loadURL(`http://localhost:3000`);
+  window.loadURL(`http://localhost`);
 
   window.on("closed", () => {
     mainWindow = null;
