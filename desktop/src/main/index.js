@@ -15,9 +15,9 @@ function createMainWindow() {
     fullscreen: true,
   });
 
-  if (isDevelopment) {
-    window.webContents.openDevTools();
-  }
+  // if (isDevelopment) {
+  //   window.webContents.openDevTools();
+  // }
 
   window.loadURL(`http://localhost:3000`);
 

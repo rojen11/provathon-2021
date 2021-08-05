@@ -7,7 +7,7 @@ let examID;
 let userID;
 
 export function ConnectSocket(id) {
-  socket = io("http://localhost:5000", { path: "/socket" });
+  socket = io("http://localhost", { path: "/socket" });
   store.dispatch({ type: ActionType.SOCKET_STORE, socket: socket });
   examID = id;
   userID = store.getState().AuthReducer.userID;
