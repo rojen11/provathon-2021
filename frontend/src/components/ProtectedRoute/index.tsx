@@ -48,7 +48,11 @@ export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = ({
               return <Component {...props} />;
             }
           }
-        } else if (!auth && !authState.isAuthenticated && Component !== undefined) {
+        } else if (
+          !auth &&
+          !authState.isAuthenticated &&
+          Component !== undefined
+        ) {
           return <Component {...props} />;
         }
         return <Redirect to={redirect} />;

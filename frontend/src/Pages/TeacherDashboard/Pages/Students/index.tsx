@@ -36,7 +36,7 @@ export default function Students() {
   //       firstName: student.firstName,
   //     };
   //   });
-  const rows:any = [];
+  const rows: any = [];
   return (
     <Layout>
       <Paper

@@ -1,11 +1,11 @@
 import Button from "@material-ui/core/Button";
 
 type Props = {
-    name: string;
-    icon: React.ReactNode;
-    p?: string;
-    click?: () => void;
-}
+  name: string;
+  icon: React.ReactNode;
+  p?: string;
+  click?: () => void;
+};
 
 export default function ItemButton({ name, icon, p, click }: Props) {
   return (

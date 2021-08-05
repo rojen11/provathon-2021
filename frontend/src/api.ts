@@ -1,4 +1,4 @@
-import Axios  from "axios";
+import Axios from "axios";
 
 export async function api(
   q: { query: string; variables?: any },

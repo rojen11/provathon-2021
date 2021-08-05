@@ -25,7 +25,7 @@ export default function CourseList() {
       </div>
       <div className="absolute bottom-0 mb-5">
         <SimpleButton
-        //   click={() => props.showState[1](true)}
+          //   click={() => props.showState[1](true)}
           color="blue"
           xspacing="3"
           yspacing="3"
@@ -52,7 +52,7 @@ export default function CourseList() {
       </div>
       <div className="absolute bottom-0 right-0 mb-5">
         <SimpleButton
-        //   click={() => props.deleteState[1](true)}
+          //   click={() => props.deleteState[1](true)}
           color="red"
           xspacing="3"
           yspacing="3"

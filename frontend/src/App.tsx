@@ -11,7 +11,9 @@ function App() {
   const Landing = lazy(() => import("./Pages/Landing"));
   const TeacherDashboard = lazy(() => import("./Pages/TeacherDashboard"));
   const StudentDashboard = lazy(() => import("./Pages/StudentDashboard"));
-  const TeacherStudentList = lazy(() => import("./Pages/TeacherDashboard/Pages/Students"))
+  const TeacherStudentList = lazy(
+    () => import("./Pages/TeacherDashboard/Pages/Students")
+  );
 
   const { loadUser } = useActions();
 
