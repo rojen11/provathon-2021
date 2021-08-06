@@ -1,13 +1,24 @@
 import ItemButton from "../../../../components/ItemButton";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 
 export default function Navbar() {
+  const course = useSelector((state: RootState) => state.course);
+
+  const id = course.active !== null ? course.active.id : "";
+
+  const disabled = id === "";
+
+  const disabledClass = disabled ? "pointer-events-none" : "";
+
   return (
     <div className="mt-7 bg-white bg-opacity-10 p-5 absolute bottom-0 w-full justify-around flex">
-      <Link to="/dashboard/1/students">
+      <Link to={`/dashboard/${id}/students`} className={disabledClass}>
         <ItemButton
           name="Students"
           p="mr-5"
+          disabled={disabled}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +37,12 @@ export default function Navbar() {
           }
         />
       </Link>
-      <Link to="">
+      <Link to={`/dashboard/${id}/exam/create`} className={disabledClass}>
         <ItemButton
           // click={() => props.change("create")}
           name="Create Exam"
           p="mr-5"
+          disabled={disabled}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -49,11 +61,12 @@ export default function Navbar() {
           }
         />
       </Link>
-      <Link to="">
+      <Link to="" className={disabledClass}>
         <ItemButton
           // click={() => props.change("previous")}
           name="Previous Exams"
           p="mr-5"
+          disabled={disabled}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -72,11 +85,12 @@ export default function Navbar() {
           }
         />
       </Link>
-      <Link to="">
+      <Link to="" className={disabledClass}>
         <ItemButton
           // click={() => props.change("mark")}
           name="Mark Exams"
           p="mr-5"
+          disabled={disabled}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -95,10 +109,11 @@ export default function Navbar() {
           }
         />
       </Link>
-      <Link to="">
+      <Link to="" className={disabledClass}>
         <ItemButton
           // click={() => props.change("notify")}
           name="Send Notifcation"
+          disabled={disabled}
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"

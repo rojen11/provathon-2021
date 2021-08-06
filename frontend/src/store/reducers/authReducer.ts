@@ -1,9 +1,5 @@
-import { ActionType } from "../actions/type";
-
-type Action = {
-  type: ActionType;
-  payload?: any;
-};
+import { ActionType } from "../actions/types";
+import { Action } from "./types";
 
 const initialState = {
   isAuthenticated: false,
@@ -11,10 +7,13 @@ const initialState = {
   user: null,
 };
 
-export default function AuthReducer(state = initialState, action: Action) {
+export default function authReducer(state = initialState, action: Action) {
   switch (action.type) {
-    case ActionType.USER_LOADING:
+    case ActionType.LOADING:
       return { ...state, isLoading: true };
+
+    case ActionType.LOADED:
+      return { ...state, isLoading: false };
 
     case ActionType.USER_LOADED:
     case ActionType.LOGIN_SUCCESS:

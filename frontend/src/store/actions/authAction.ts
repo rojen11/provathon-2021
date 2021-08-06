@@ -1,5 +1,5 @@
 import { api } from "../../api";
-import { ActionType } from "./type";
+import { ActionType } from "./types";
 
 type LoginProps = {
   email: string;
@@ -9,7 +9,7 @@ type LoginProps = {
 // load user on page load
 export const loadUser = () => {
   return (dispatch: Function) => {
-    dispatch({ type: ActionType.USER_LOADING });
+    dispatch({ type: ActionType.LOADING });
 
     const accessToken = localStorage.getItem("accessToken");
 
@@ -40,7 +40,7 @@ export const loadUser = () => {
 
 export const login = ({ email, password }: LoginProps) => {
   return (dispatch: Function) => {
-    dispatch({ type: ActionType.USER_LOADING });
+    dispatch({ type: ActionType.LOADING });
 
     api({
       query: `mutation tokenAuth($email: String!, $password: String!) {
