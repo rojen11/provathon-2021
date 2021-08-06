@@ -4,22 +4,20 @@ import { Fragment } from "react";
 
 type Props = {
   show: boolean;
-  setShow: Function;
   title: string;
   body: string;
   buttonName: string;
   color: string;
-  click: () => void;
+  close: () => void;
 };
 
 export default function PopUp({
   show,
-  setShow,
   title,
   body,
   buttonName,
   color,
-  click,
+  close,
 }: Props) {
   return (
     <Transition
@@ -34,7 +32,7 @@ export default function PopUp({
     >
       <Dialog
         static
-        onClose={() => setShow(false)}
+        onClose={close}
         className="shadow-xl filter z-10 drop-shadow-lg absolute w-96 h-48 top-1/4 left-1/2 transform -translate-x-1/2 bg-white border-2 border-black rounded-lg"
       >
         <Dialog.Title className="font-bold uppercase text-xl text-center pt-2 pb-2 border-b-2 border-black">
@@ -45,10 +43,7 @@ export default function PopUp({
         </Dialog.Description>
         <button
           className={`focus:outline-none bg-${color}-400 bg-opacity-50 hover:bg-${color}-300 px-7 py-1 rounded-lg text-right absolute right-10`}
-          onClick={() => {
-            setShow(false);
-            click();
-          }}
+          onClick={close}
         >
           {buttonName}
         </button>

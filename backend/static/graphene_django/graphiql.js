@@ -8,7 +8,7 @@
   SubscriptionsTransportWs,
   fetch,
   history,
-  location,
+  location
 ) {
   // Parse the cookie value for a CSRF token
   var csrftoken;
@@ -28,7 +28,7 @@
       var eq = entry.indexOf("=");
       if (eq >= 0) {
         parameters[decodeURIComponent(entry.slice(0, eq))] = decodeURIComponent(
-          entry.slice(eq + 1),
+          entry.slice(eq + 1)
         );
       }
     });
@@ -62,14 +62,14 @@
 
   // Defines a GraphQL fetcher using the fetch API.
   function httpClient(graphQLParams, opts) {
-    if (typeof opts === 'undefined') {
+    if (typeof opts === "undefined") {
       opts = {};
     }
     var headers = opts.headers || {};
-    headers['Accept'] = headers['Accept'] || 'application/json';
-    headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+    headers["Accept"] = headers["Accept"] || "application/json";
+    headers["Content-Type"] = headers["Content-Type"] || "application/json";
     if (csrftoken) {
-      headers['X-CSRFToken'] = csrftoken
+      headers["X-CSRFToken"] = csrftoken;
     }
     return fetch(fetchURL, {
       method: "post",
@@ -103,7 +103,7 @@
       reconnect: true,
       // Delay socket initialization until the first subscription is started.
       lazy: true,
-    },
+    }
   );
 
   // Keep a reference to the currently-active subscription, if available.
@@ -139,11 +139,13 @@
       // Look for lines that start with an operation keyword, ignoring whitespace.
       "^\\s*(query|mutation|subscription)\\s*" +
         // The operation keyword should be followed by whitespace and the operationName in the GraphQL parameters (if available).
-        (graphQLParams.operationName ? ("\\s+" + graphQLParams.operationName) : "") +
+        (graphQLParams.operationName
+          ? "\\s+" + graphQLParams.operationName
+          : "") +
         // The line should eventually encounter an opening curly brace.
         "[^\\{]*\\{",
       // Enable multiline matching.
-      "m",
+      "m"
     );
     var match = operationRegex.exec(graphQLParams.query);
     if (!match) {
@@ -187,7 +189,7 @@
   // Render <GraphiQL /> into the body.
   ReactDOM.render(
     React.createElement(GraphiQL, options),
-    document.getElementById("editor"),
+    document.getElementById("editor")
   );
 })(
   document,
@@ -199,5 +201,5 @@
   window.SubscriptionsTransportWs,
   window.fetch,
   window.history,
-  window.location,
+  window.location
 );

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import CourseButton from "../CourseButton";
 import { Course } from "../../../../store/reducers/courseReducer";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 
 type Props = {
   setShowPopup: Function;
@@ -17,7 +17,9 @@ type CourseParams = {
 };
 
 export default function CourseList({ setShowPopup }: Props) {
-  const { loadCourse, selectCourse } = useActions();
+  const { loadCourse, selectCourse, deleteCourse } = useActions();
+
+  const history = useHistory();
 
   const courseState = useSelector((state: RootState) => state.course);
 
@@ -92,7 +94,10 @@ export default function CourseList({ setShowPopup }: Props) {
           </div>
           <div className="absolute bottom-0 right-0 mb-5">
             <SimpleButton
-              //   click={() => props.deleteState[1](true)}
+              click={() => {
+                deleteCourse(courseId);
+                history.push("/dashboard/");
+              }}
               color="red"
               xspacing="3"
               yspacing="3"

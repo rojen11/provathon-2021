@@ -1,6 +1,7 @@
 import { api } from "../../api";
 import { ActionType } from "./types";
 
+// Add a course
 export const addCourse = (name: string) => {
   return (dispatch: Function) => {
     dispatch({ type: ActionType.COURSE_LOADING });
@@ -31,6 +32,7 @@ export const addCourse = (name: string) => {
   };
 };
 
+// Load all course on init
 export const loadCourse = () => {
   return (dispatch: Function) => {
     dispatch({ type: ActionType.COURSE_LOADING });
@@ -54,8 +56,34 @@ export const loadCourse = () => {
   };
 };
 
+// Set a course as active
 export const selectCourse = (id: string) => {
   return (dispatch: Function) => {
     dispatch({ type: ActionType.COURSE_SELECT, payload: { id } });
+  };
+};
+
+// Delete a course
+export const deleteCourse = (id: string) => {
+  return (dispatch: Function) => {
+    dispatch({ type: ActionType.COURSE_LOADING });
+    api({
+      query: `
+          mutation ($id: Int!) {
+            deleteCourse(id:$id) {
+                success
+                id
+            }
+        }
+    `,
+      variables: { id },
+    }).then((res) => {
+      const data = res.data.data.deleteCourse;
+      if (data !== null && data.success === true) {
+        dispatch({ type: ActionType.COURSE_REMOVE, payload: { id: data.id } });
+      } else {
+        // handle error
+      }
+    });
   };
 };

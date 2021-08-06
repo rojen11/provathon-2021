@@ -2,10 +2,11 @@ import { TextField } from "@material-ui/core";
 
 type Props = {
   label: string;
-  change: (e: React.ChangeEvent) => void;
+  change: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 };
 
-export default function EnterDateTime({ label, change }: Props) {
+export default function EnterDateTime({ label, change, value }: Props) {
   return (
     <TextField
       onChange={change}
@@ -15,6 +16,7 @@ export default function EnterDateTime({ label, change }: Props) {
       InputLabelProps={{
         shrink: true,
       }}
+      value={value}
     />
   );
 }

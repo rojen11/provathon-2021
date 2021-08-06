@@ -1,6 +1,15 @@
 import Layout from "../../components/Layout";
 import { Paper } from "@material-ui/core/";
 import { DataGrid } from "@material-ui/data-grid";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
+import { useEffect } from "react";
+import { useActions } from "../../../../store/useActions";
+import { useParams } from "react-router-dom";
+
+type Params = {
+  courseId: string;
+};
 
 const columns = [
   { field: "id", headerName: "Number", width: 110, sortable: false },
@@ -36,7 +45,20 @@ export default function Students() {
   //       firstName: student.firstName,
   //     };
   //   });
-  const rows: any = [];
+
+  const studentState = useSelector((state: RootState) => state.student);
+
+  const rows =
+    studentState?.students !== undefined ? [...studentState?.students] : [];
+
+  const { loadStudents } = useActions();
+
+  const { courseId } = useParams<Params>();
+
+  useEffect(() => {
+    loadStudents(courseId);
+  }, []);
+
   return (
     <Layout>
       <Paper
