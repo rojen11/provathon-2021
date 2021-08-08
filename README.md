@@ -32,3 +32,10 @@
   **For production build:**
   <br>
   `yarn dist`
+
+<br>
+<br>
+<br>
+<br>
+
+**This application is still in development phase.**
