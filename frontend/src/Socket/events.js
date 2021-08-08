@@ -35,7 +35,7 @@ export function ExamStart(examID) {
 }
 
 export function TicketOpened(ticketID, title, body, studentID) {
-  socket.emit("ticket-open", ticketID, title, body, studentID, examID)
+  socket.emit("ticket-open", ticketID, title, body, studentID, examID);
   store.dispatch({
     type: ActionType.ADD_TICKET,
     ticket: {
@@ -49,7 +49,7 @@ export function TicketOpened(ticketID, title, body, studentID) {
 }
 
 export function ReplyToTicket(reply, userID, ticketID, userName, isTeacher) {
-  socket.emit("ticket-reply", reply, userID, ticketID, userName, isTeacher)
+  socket.emit("ticket-reply", reply, userID, ticketID, userName, isTeacher);
 }
 
 export function CloseTicket(ticketID, teacherName) {
@@ -59,7 +59,6 @@ export function CloseTicket(ticketID, teacherName) {
 
 export function events() {
   socket.on("ticket-open-teacher", (ticketID, title, body, studentID) => {
-
     store.dispatch({
       type: ActionType.ADD_TICKET,
       ticket: {
@@ -79,7 +78,7 @@ export function events() {
 
   socket.on("ticket-reply", (ticketID, name, reply) => {
     store.dispatch({
-      type: ActionType.REPLY_TICKET, 
+      type: ActionType.REPLY_TICKET,
       id: ticketID,
       userName: name,
       comment: reply,
@@ -93,7 +92,7 @@ export function sendLog(message) {
     socket.emit("log", {
       userId: userID,
       message: message,
-      examId: examID
+      examId: examID,
     });
   }
 }

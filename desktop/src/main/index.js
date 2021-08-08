@@ -19,7 +19,7 @@ function createMainWindow() {
   //   window.webContents.openDevTools();
   // }
 
-  window.loadURL(`http://localhost:3000`);
+  window.loadURL(`http://localhost`);
 
   window.on("closed", () => {
     mainWindow = null;
