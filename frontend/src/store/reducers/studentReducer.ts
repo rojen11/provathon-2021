@@ -36,7 +36,7 @@ export default function studentReducer(state = initialState, action: Action) {
       return {
         ...state,
         isLoading: false,
-        students: [action.payload.students],
+        students: [...action.payload.students],
       };
     default:
       return state;

@@ -30,7 +30,6 @@ export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = ({
 }) => {
   const authState = useSelector((state: RootState) => state.auth);
 
-  console.log(authState);
 
   return (
     <Route

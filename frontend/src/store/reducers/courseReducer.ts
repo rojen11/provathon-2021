@@ -5,6 +5,9 @@ export type Course = {
   id: string;
   name: string;
   code: string;
+  examSet?: any[];
+  primaryTeacher?: {id:string, firstName:string, lastName:string};
+
 };
 
 type StateType = {
@@ -53,6 +56,12 @@ export default function courseReducer(
       }
 
       return { ...state, active: { ...course } };
+
+
+    case ActionType.COURSE_JOIN:
+      return {
+        ...state, isLoading: false, courses: [...state.courses, action.payload.course]
+      }
 
     default:
       return state;

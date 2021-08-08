@@ -5,6 +5,7 @@ const initialState = {
   isAuthenticated: false,
   isLoading: true,
   user: null,
+  registerSuccess: false,
 };
 
 export default function authReducer(state = initialState, action: Action) {
@@ -26,6 +27,17 @@ export default function authReducer(state = initialState, action: Action) {
 
     case ActionType.LOGIN_FAIL:
       return { ...state, isAuthenticated: false, isLoading: false };
+
+    case ActionType.REGISTER_SUCCESS:
+      return { ...state, isLoading: false, registerSuccess: true };
+
+    case ActionType.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: false,
+        registerSuccess: false,
+        user: null,
+      };
 
     default:
       return state;

@@ -2,7 +2,7 @@ import Button from "@material-ui/core/Button";
 
 type Props = {
   name: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   p?: string;
   click?: () => void;
   disabled?: boolean;

@@ -5,19 +5,32 @@ import { useActions } from "./store/useActions";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import Loading from "./components/Loading";
+import TeacherRoute from "./components/TeacherRoute";
+import StudentRoute from "./components/StudentRoute";
+
+// Log System
+
+export let ipcRenderer: any = null;
+
+try {
+  const electron = window.require("electron");
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ipcRenderer = electron.ipcRenderer;
+
+  // @ts-ignore
+  window.desktop = true;
+} catch {
+  console.log("browser");
+}
 
 function App() {
   // Lazy loading routes
   const Login = lazy(() => import("./Pages/Login"));
+  const SignUp = lazy(() => import("./Pages/Signup"));
   const Landing = lazy(() => import("./Pages/Landing"));
   const TeacherDashboard = lazy(() => import("./Pages/TeacherDashboard"));
   const StudentDashboard = lazy(() => import("./Pages/StudentDashboard"));
-  const TeacherStudentList = lazy(
-    () => import("./Pages/TeacherDashboard/Pages/Students")
-  );
-  const TeacherCreateExam = lazy(
-    () => import("./Pages/TeacherDashboard/Pages/CreateExam")
-  );
 
   const { loadUser } = useActions();
 
@@ -25,6 +38,8 @@ function App() {
 
   useEffect(() => {
     loadUser();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -51,27 +66,24 @@ function App() {
               auth={true}
               redirect="/login"
             />
-            <ProtectedRoute
-              exact
-              path="/dashboard/:courseId/students"
-              component={TeacherStudentList}
-              auth={true}
-              isTeacher={true}
-              redirect="/login"
-            />
-            <ProtectedRoute
-              exact
-              path="/dashboard/:courseId/exam/create"
-              component={TeacherCreateExam}
-              auth={true}
-              isTeacher={true}
-              redirect="/login"
-            />
+
+            <Route path="/dashboard">
+              <TeacherRoute />
+              <StudentRoute />
+            </Route>
 
             <ProtectedRoute
               exact
               path="/login"
               component={Login}
+              auth={false}
+              redirect="/dashboard"
+            />
+
+            <ProtectedRoute
+              exact
+              path="/signup"
+              component={SignUp}
               auth={false}
               redirect="/dashboard"
             />

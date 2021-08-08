@@ -38,18 +38,11 @@ const columns = [
 ];
 
 export default function Students() {
-  // const rows = props.students.map((student) => {
-  //     return {
-  //       id: student.id,
-  //       lastName: student.lastName,
-  //       firstName: student.firstName,
-  //     };
-  //   });
-
   const studentState = useSelector((state: RootState) => state.student);
 
-  const rows =
-    studentState?.students !== undefined ? [...studentState?.students] : [];
+  const rows:any =
+  studentState?.students !== undefined ? [...studentState?.students] : [];
+  // const rows = [];
 
   const { loadStudents } = useActions();
 
@@ -57,6 +50,7 @@ export default function Students() {
 
   useEffect(() => {
     loadStudents(courseId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

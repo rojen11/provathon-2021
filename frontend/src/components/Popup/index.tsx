@@ -1,6 +1,6 @@
 import { Dialog } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 
 type Props = {
   show: boolean;
@@ -19,6 +19,8 @@ export default function PopUp({
   color,
   close,
 }: Props) {
+  const buttonRef = useRef(null);
+
   return (
     <Transition
       show={show}
@@ -32,7 +34,8 @@ export default function PopUp({
     >
       <Dialog
         static
-        onClose={close}
+        onClose={() => {}}
+        initialFocus={buttonRef}
         className="shadow-xl filter z-10 drop-shadow-lg absolute w-96 h-48 top-1/4 left-1/2 transform -translate-x-1/2 bg-white border-2 border-black rounded-lg"
       >
         <Dialog.Title className="font-bold uppercase text-xl text-center pt-2 pb-2 border-b-2 border-black">
@@ -43,7 +46,8 @@ export default function PopUp({
         </Dialog.Description>
         <button
           className={`focus:outline-none bg-${color}-400 bg-opacity-50 hover:bg-${color}-300 px-7 py-1 rounded-lg text-right absolute right-10`}
-          onClick={close}
+          onClick={() => {}}
+          ref={buttonRef}
         >
           {buttonName}
         </button>

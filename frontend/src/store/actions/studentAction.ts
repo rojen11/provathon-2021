@@ -6,16 +6,24 @@ export const loadStudents = (id: string) => {
     dispatch({ type: ActionType.STUDENT_LOADING });
     api({
       query: `
-                query ($id: ID!) {
-                    studentByCourse (courseId: $id) {
-                        id
-                        firstName
-                        lastName
-                        email
-                    }
-                }
+          query ($id: ID!) {
+              studentByCourse (courseId: $id) {
+                  id
+                  firstName
+                  lastName
+                  email
+              }
+          }
         `,
       variables: { id },
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      const data = res.data.data.studentByCourse;
+      if (data !== null) {
+        dispatch({
+          type: ActionType.STUDENT_LOAD,
+          payload: { students: data },
+        });
+      }
+    });
   };
 };

@@ -21,6 +21,8 @@ class CreateExam(graphene.Mutation):
 
     # model
     exam = graphene.Field(ExamType)
+
+    success = graphene.Boolean()
     
     class Arguments:
         name = graphene.String(required=True)
@@ -46,7 +48,7 @@ class CreateExam(graphene.Mutation):
                 exam = Exam(name=name, course=course.first(), start_time=start_time, end_time=end_time, submit_duration=submit_duration, total_marks=total_marks, completed=False)
                 exam.save()
 
-                return CreateExam(exam=exam)
+                return CreateExam(exam=exam, success=True)
 
             raise Exception("Course not found!")
 

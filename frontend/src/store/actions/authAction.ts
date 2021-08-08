@@ -1,9 +1,19 @@
+import { RootState } from "..";
 import { api } from "../../api";
 import { ActionType } from "./types";
 
 type LoginProps = {
   email: string;
   password: string;
+};
+
+type SignupProps = {
+  email: string;
+  password1: string;
+  password2: string;
+  firstName: string;
+  lastName: string;
+  isTeacher: boolean;
 };
 
 // load user on page load
@@ -73,6 +83,72 @@ export const login = ({ email, password }: LoginProps) => {
             payload: { user: { ...data.user } },
           });
         }
+      }
+    });
+  };
+};
+
+export const logout = () => {
+  return (dispatch: Function, getState: () => RootState) => {
+    if (getState().auth.isAuthenticated) {
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      // remove tokens
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
+      api({
+        query: `
+              mutation ($refreshToken: String!) {
+                revokeToken(
+                  refreshToken: $refreshToken
+                ) {
+                  success,
+                  errors
+                }
+              }
+      `,
+        variables: { refreshToken },
+      }).then((res) => {
+        const data = res.data.data.revokeToken;
+        if (data.success) {
+          dispatch({ type: ActionType.LOGOUT_SUCCESS });
+        }
+      });
+    }
+  };
+};
+
+export const signup = (params: SignupProps) => {
+  return (dispatch: Function) => {
+    dispatch({ type: ActionType.LOADING });
+    api({
+      query: `
+        mutation ($email: String!, $password1: String!, $password2: String!, $firstName: String!, $lastName: String!, $isTeacher: Boolean!) {
+          register(
+            email: $email,
+            password1: $password1,
+            password2: $password2,
+            firstName: $firstName,
+            lastName: $lastName,
+            isTeacher: $isTeacher
+          ) {
+            success,
+            errors,
+            token,
+            refreshToken
+          }
+        }
+    `,
+      variables: params,
+    }).then((res) => {
+      const data = res.data.data.register;
+      if (data.success === true) {
+        dispatch({
+          type: ActionType.REGISTER_SUCCESS,
+        });
+      } else {
+        // handle error
       }
     });
   };

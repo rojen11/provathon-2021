@@ -125,14 +125,14 @@ export default function CreateExam() {
           (examState.isLoading ? (
             <PopupLoading />
           ) : (
-            <PopUp
-              show={true}
-              close={() => closePopup()}
-              title="Exam Has Been Created"
-              body="This exam has been created and sent out to students in this course. Please be sure to provide support using tickets feature."
-              buttonName="OKAY"
-              color="green"
-            />
+          <PopUp
+            show={true}
+            close={() => {closePopup()}}
+            title="Exam Has Been Created"
+            body="This exam has been created and sent out to students in this course. Please be sure to provide support using tickets feature."
+            buttonName="OKAY"
+            color="green"
+          />
           ))}
       </>
     </Layout>

@@ -22,6 +22,7 @@ const paperStyle = {
   borderRadius: "20px",
 };
 
+
 export default function Login() {
   const [fields, setFields] = useState({
     email: "",
@@ -32,6 +33,7 @@ export default function Login() {
   const [error] = useState("");
 
   const action = useActions();
+
 
   function handleLogin() {
     action.login({ email: fields.email, password: fields.password });
@@ -53,7 +55,7 @@ export default function Login() {
 
   return (
     <Paper elevation={15} style={paperStyle}>
-      <Grid>
+      <Grid className="text-center">
         <b className="text-2xl text-black uppercase">Exam Taker</b>
       </Grid>
       <TextField
@@ -87,18 +89,14 @@ export default function Login() {
           className="mt-4"
           label="Remember me"
         />
-        <Button variant="contained" fullWidth onClick={handleLogin}>
-          Login
-        </Button>
-        {/* <Button
+        <Button
           variant="contained"
-          className="mt-6 bg-green-500 text-white hover:bg-green-600"
           fullWidth
           onClick={handleLogin}
-          type="login"
+          color="primary"
         >
           Login
-        </Button> */}
+        </Button>
       </Grid>
       {error !== "" && (
         <div className="text-red-600 text-md font-semibold text-center mb-2 mt-2">

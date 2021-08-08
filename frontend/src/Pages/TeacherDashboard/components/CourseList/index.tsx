@@ -26,8 +26,10 @@ export default function CourseList({ setShowPopup }: Props) {
   const { courseId } = useParams<CourseParams>();
 
   useEffect(() => {
-    loadCourse();
-    selectCourse(courseId);
+
+      loadCourse(courseId);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
