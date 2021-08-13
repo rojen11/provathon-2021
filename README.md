@@ -35,7 +35,5 @@
 
 <br>
 <br>
-<br>
-<br>
 
 **This application is still in development phase.**
