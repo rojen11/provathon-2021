@@ -23,3 +23,29 @@
  
 ![unknown](https://user-images.githubusercontent.com/88263300/129367257-4794f4c3-ce9d-4ed7-abbf-b9f271c4c3ea.png)
 
+# Get Started
+
+## **Installation**
+
+- Go to docker folder and make a copy of .env_sample to .env
+- Go back to the root folder and run the following command
+  <br>
+  `docker-compose up`
+- After the setup is done, go the localhost in your browser
+
+### **Electron app**
+
+- Go to desktop folder and run the following command <br><br>
+  **For development environment:**
+  <br>
+  ` yarn dev`
+  <br>
+  <br>
+  **For production build:**
+  <br>
+  `yarn dist`
+
+<br>
+<br>
+
+**This application is still in development phase.**
