@@ -23,7 +23,17 @@
  
 ![unknown](https://user-images.githubusercontent.com/88263300/129367257-4794f4c3-ce9d-4ed7-abbf-b9f271c4c3ea.png)
 
-# Get Started
+<br>
+<br>
+
+# Getting Started
+
+## **Requirements**
+
+- docker
+- docker-compose
+- nodejs 14+
+- yarn
 
 ## **Installation**
 
