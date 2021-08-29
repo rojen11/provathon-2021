@@ -1,10 +1,16 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
+
 module.exports = {
   important: true,
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  purge: {
+    enabled: false,
+  },
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
+        ...defaultTheme.colors,
         primary: "#0067f4",
       },
     },
